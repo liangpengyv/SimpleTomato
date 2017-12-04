@@ -20,9 +20,9 @@ public class CircleProgressBar extends View {
     // 画笔宽度
     private float mStrokeWidth = 20;
     // 画笔的一半宽度
-    private float mHalfStrokeWidth = 50 / 2;
+    private float mHalfStrokeWidth = 20 / 2;
     // 半径
-    private float mRadius = 560;
+    private float mRadius = 380;
     private RectF mRect;
     // 当前进度
     private int mProgress = 0;

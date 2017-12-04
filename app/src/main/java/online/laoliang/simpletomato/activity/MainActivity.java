@@ -1,6 +1,7 @@
 package online.laoliang.simpletomato.activity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -19,15 +20,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private Anticlockwise anticlockwiseCountDown;
     public static CircleProgressBar mainCircle;
-    private Button buttonMenu;
+    private Button buttonSettings;
     private Button buttonStatistics;
+
+    private Intent intent;
 
     private void findView() {
         anticlockwiseCountDown = (Anticlockwise) findViewById(R.id.anticlockwise_count_down);
         mainCircle = (CircleProgressBar) findViewById(R.id.main_circle);
         mainCircle.setOnClickListener(this);
-        buttonMenu = (Button) findViewById(R.id.button_menu);
-        buttonMenu.setOnClickListener(this);
+        buttonSettings = (Button) findViewById(R.id.button_settings);
+        buttonSettings.setOnClickListener(this);
         buttonStatistics = (Button) findViewById(R.id.button_statistics);
         buttonStatistics.setOnClickListener(this);
     }
@@ -55,11 +58,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.main_circle:
                 mainButton();
                 break;
-            case R.id.button_menu:
-
+            case R.id.button_settings:
+                intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
                 break;
             case R.id.button_statistics:
-                
+                intent = new Intent(this, StatisticsActivity.class);
+                startActivity(intent);
                 break;
         }
     }
@@ -79,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case "work_waiting":
                 anticlockwiseCountDown.initTime(workDuration, null);
                 anticlockwiseCountDown.start();
-                buttonMenu.setVisibility(View.INVISIBLE);
+                buttonSettings.setVisibility(View.INVISIBLE);
                 buttonStatistics.setVisibility(View.INVISIBLE);
                 editor.putString("nonceStatus", "work_running");
                 editor.apply();
@@ -93,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 anticlockwiseCountDown.initTime(workDuration, "开始");
-                                buttonMenu.setVisibility(View.VISIBLE);
+                                buttonSettings.setVisibility(View.VISIBLE);
                                 buttonStatistics.setVisibility(View.VISIBLE);
                                 mainCircle.setProgress(0);
                                 //此处烂番茄+1
@@ -114,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case "work_over":
                 anticlockwiseCountDown.ringStop();
                 anticlockwiseCountDown.initTime(restDuration, "休息");
-                buttonMenu.setVisibility(View.VISIBLE);
+                buttonSettings.setVisibility(View.VISIBLE);
                 buttonStatistics.setVisibility(View.VISIBLE);
                 mainCircle.setProgress(0);
                 editor.putString("nonceStatus", "rest_waiting");
@@ -123,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case "rest_waiting":
                 anticlockwiseCountDown.initTime(restDuration, null);
                 anticlockwiseCountDown.start();
-                buttonMenu.setVisibility(View.INVISIBLE);
+                buttonSettings.setVisibility(View.INVISIBLE);
                 buttonStatistics.setVisibility(View.INVISIBLE);
                 editor.putString("nonceStatus", "rest_running");
                 editor.apply();
@@ -137,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 anticlockwiseCountDown.initTime(workDuration, "开始");
-                                buttonMenu.setVisibility(View.VISIBLE);
+                                buttonSettings.setVisibility(View.VISIBLE);
                                 buttonStatistics.setVisibility(View.VISIBLE);
                                 mainCircle.setProgress(0);
                                 editor.putString("nonceStatus", "work_waiting");
@@ -156,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case "rest_over":
                 anticlockwiseCountDown.ringStop();
                 anticlockwiseCountDown.initTime(workDuration, "开始");
-                buttonMenu.setVisibility(View.VISIBLE);
+                buttonSettings.setVisibility(View.VISIBLE);
                 buttonStatistics.setVisibility(View.VISIBLE);
                 mainCircle.setProgress(0);
                 editor.putString("nonceStatus", "work_waiting");

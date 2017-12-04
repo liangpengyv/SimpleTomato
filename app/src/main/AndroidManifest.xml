@@ -16,8 +16,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activity.SettingsActivity" />
 
-        <service android:name=".service.RingtonePlayingService"></service>
+        <service android:name=".service.RingtonePlayingService" />
+
+        <activity android:name=".activity.StatisticsActivity"></activity>
     </application>
 
 </manifest>
