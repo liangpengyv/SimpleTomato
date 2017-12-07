@@ -1,8 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="online.laoliang.simpletomato.activity.SettingsActivity">
 
-</RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/set_work_duration"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="#00000000" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="30dp"
+            android:text="工作时长" />
+
+        <TextView
+            android:id="@+id/reference_point_01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="30dp"
+            android:text="分钟" />
+
+        <TextView
+            android:id="@+id/show_nonce_work_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/reference_point_01"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="-30dp"
+            android:textColor="@color/colorPrimary" />
+
+    </RelativeLayout>
+
+    <SeekBar
+        android:id="@+id/choose_work_duration"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:max="50"
+        android:visibility="gone" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorPrimary" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/set_rest_duration"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="#00000000" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="30dp"
+            android:text="休息时长" />
+
+        <TextView
+            android:id="@+id/reference_point_02"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="30dp"
+            android:text="分钟" />
+
+        <TextView
+            android:id="@+id/show_nonce_rest_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/reference_point_02"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="-30dp"
+            android:textColor="@color/colorPrimary" />
+
+    </RelativeLayout>
+
+    <SeekBar
+        android:id="@+id/choose_rest_duration"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:max="29"
+        android:visibility="gone" />
+
+</LinearLayout>

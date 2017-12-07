@@ -102,10 +102,10 @@ public class Anticlockwise extends Chronometer {
     /**
      * 初始化时间
      *
-     * @param _time_s
+     * @param _time_min
      */
-    public void initTime(long _time_s, String shouldDo) {
-        mTime = mNextTime = _time_s;
+    public void initTime(int _time_min, String shouldDo) {
+        mTime = mNextTime = _time_min * 60;
         if (shouldDo != null) {
             this.setText(shouldDo);
         }

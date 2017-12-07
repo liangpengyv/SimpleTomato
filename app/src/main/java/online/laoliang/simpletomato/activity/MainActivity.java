@@ -15,8 +15,8 @@ import online.laoliang.simpletomato.util.CircleProgressBar;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private final long DEFAULT_WORK_DURATION = 6;
-    private final long DEFAULT_REST_DURATION = 3;
+    private final int DEFAULT_WORK_DURATION = 25;
+    private final int DEFAULT_REST_DURATION = 5;
 
     private Anticlockwise anticlockwiseCountDown;
     public static CircleProgressBar mainCircle;
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         editor.apply();
         //同时将闹钟主按钮重置为初始状态
         SharedPreferences sharedPreferences = getSharedPreferences("data", MODE_PRIVATE);
-        long workDuration = sharedPreferences.getLong("workDuration", DEFAULT_WORK_DURATION);
+        int workDuration = sharedPreferences.getInt("workDuration", DEFAULT_WORK_DURATION);
         anticlockwiseCountDown.initTime(workDuration, "开始");
     }
 
@@ -75,8 +75,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void mainButton() {
         SharedPreferences sharedPreferences = getSharedPreferences("data", MODE_PRIVATE);
         String nonceStatus = sharedPreferences.getString("nonceStatus", "work_waiting");
-        final long workDuration = sharedPreferences.getLong("workDuration", DEFAULT_WORK_DURATION);
-        long restDuration = sharedPreferences.getLong("restDuration", DEFAULT_REST_DURATION);
+        final int workDuration = sharedPreferences.getInt("workDuration", DEFAULT_WORK_DURATION);
+        int restDuration = sharedPreferences.getInt("restDuration", DEFAULT_REST_DURATION);
 
         final SharedPreferences.Editor editor = getSharedPreferences("data", MODE_PRIVATE).edit();
 
