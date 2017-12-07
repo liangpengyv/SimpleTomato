@@ -91,30 +91,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case "work_running":
                 anticlockwiseCountDown.stop();
-                new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog_Alert)
-                        .setCancelable(false)
-                        .setMessage("要放弃这个番茄吗")
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                anticlockwiseCountDown.initTime(workDuration, "开始");
-                                buttonSettings.setVisibility(View.VISIBLE);
-                                buttonStatistics.setVisibility(View.VISIBLE);
-                                mainCircle.setProgress(0);
-                                //此处烂番茄+1
-                                ////////////
-                                editor.putString("nonceStatus", "work_waiting");
-                                editor.apply();
-                            }
-                        })
-                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                anticlockwiseCountDown.start();
-                            }
-                        })
-                        .create()
-                        .show();
+                new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog_Alert).setCancelable(false).setMessage("要放弃这个番茄吗").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        anticlockwiseCountDown.initTime(workDuration, "开始");
+                        buttonSettings.setVisibility(View.VISIBLE);
+                        buttonStatistics.setVisibility(View.VISIBLE);
+                        mainCircle.setProgress(0);
+                        //此处烂番茄+1
+                        ////////////
+                        editor.putString("nonceStatus", "work_waiting");
+                        editor.apply();
+                    }
+                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        anticlockwiseCountDown.start();
+                    }
+                }).create().show();
                 break;
             case "work_over":
                 anticlockwiseCountDown.ringStop();
@@ -135,28 +129,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case "rest_running":
                 anticlockwiseCountDown.stop();
-                new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog_Alert)
-                        .setCancelable(false)
-                        .setMessage("结束本次休息")
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                anticlockwiseCountDown.initTime(workDuration, "开始");
-                                buttonSettings.setVisibility(View.VISIBLE);
-                                buttonStatistics.setVisibility(View.VISIBLE);
-                                mainCircle.setProgress(0);
-                                editor.putString("nonceStatus", "work_waiting");
-                                editor.apply();
-                            }
-                        })
-                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                anticlockwiseCountDown.start();
-                            }
-                        })
-                        .create()
-                        .show();
+                new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog_Alert).setCancelable(false).setMessage("结束本次休息").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        anticlockwiseCountDown.initTime(workDuration, "开始");
+                        buttonSettings.setVisibility(View.VISIBLE);
+                        buttonStatistics.setVisibility(View.VISIBLE);
+                        mainCircle.setProgress(0);
+                        editor.putString("nonceStatus", "work_waiting");
+                        editor.apply();
+                    }
+                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        anticlockwiseCountDown.start();
+                    }
+                }).create().show();
                 break;
             case "rest_over":
                 anticlockwiseCountDown.ringStop();
@@ -184,101 +172,71 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case "work_running":
                 anticlockwiseCountDown.stop();
-                new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog_Alert)
-                        .setCancelable(false)
-                        .setMessage("要放弃这个番茄吗")
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                //此处烂番茄+1
-                                ////////////
-                                MainActivity.super.onBackPressed();
-                            }
-                        })
-                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                anticlockwiseCountDown.start();
-                            }
-                        })
-                        .create()
-                        .show();
+                new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog_Alert).setCancelable(false).setMessage("要放弃这个番茄吗").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //此处烂番茄+1
+                        ////////////
+                        MainActivity.super.onBackPressed();
+                    }
+                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        anticlockwiseCountDown.start();
+                    }
+                }).create().show();
                 break;
             case "work_over":
-                new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog_Alert)
-                        .setCancelable(false)
-                        .setMessage("要关闭响铃并退出应用吗")
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                anticlockwiseCountDown.ringStop();
-                                MainActivity.super.onBackPressed();
-                            }
-                        })
-                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                            }
-                        })
-                        .create()
-                        .show();
+                new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog_Alert).setCancelable(false).setMessage("要关闭响铃并退出应用吗").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        anticlockwiseCountDown.ringStop();
+                        MainActivity.super.onBackPressed();
+                    }
+                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
+                }).create().show();
                 break;
             case "rest_waiting":
-                new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog_Alert)
-                        .setCancelable(false)
-                        .setMessage("退出应用？")
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                MainActivity.super.onBackPressed();
-                            }
-                        })
-                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                            }
-                        })
-                        .create()
-                        .show();
+                new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog_Alert).setCancelable(false).setMessage("退出应用？").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        MainActivity.super.onBackPressed();
+                    }
+                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
+                }).create().show();
                 break;
             case "rest_running":
                 anticlockwiseCountDown.stop();
-                new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog_Alert)
-                        .setCancelable(false)
-                        .setMessage("要结束休息并退出应用吗")
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                MainActivity.super.onBackPressed();
-                            }
-                        })
-                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                anticlockwiseCountDown.start();
-                            }
-                        })
-                        .create()
-                        .show();
+                new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog_Alert).setCancelable(false).setMessage("要结束休息并退出应用吗").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        MainActivity.super.onBackPressed();
+                    }
+                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        anticlockwiseCountDown.start();
+                    }
+                }).create().show();
                 break;
             case "rest_over":
-                new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog_Alert)
-                        .setCancelable(false)
-                        .setMessage("要关闭响铃并退出应用吗")
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                anticlockwiseCountDown.ringStop();
-                                MainActivity.super.onBackPressed();
-                            }
-                        })
-                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                            }
-                        })
-                        .create()
-                        .show();
+                new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog_Alert).setCancelable(false).setMessage("要关闭响铃并退出应用吗").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        anticlockwiseCountDown.ringStop();
+                        MainActivity.super.onBackPressed();
+                    }
+                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
+                }).create().show();
                 break;
         }
     }

@@ -35,21 +35,28 @@ public class Anticlockwise extends Chronometer {
         this.setOnChronometerTickListener(listener);
     }
 
-//    /**
-//     * 重新启动计时
-//     */
-//    public void reStart(long _time_s) {
-//        if (_time_s == -1) {
-//            mNextTime = mTime;
-//        } else {
-//            mTime = mNextTime = _time_s;
-//        }
-//        this.start();
-//    }
-//
-//    public void reStart() {
-//        reStart(-1);
-//    }
+    @Override
+    protected void onWindowVisibilityChanged(int visibility) {
+        // 始终将控件置为“VISIBLE”，保证按home键和熄灭屏幕时，倒计时仍在继续
+        visibility = VISIBLE;
+        super.onWindowVisibilityChanged(visibility);
+    }
+
+    //    /**
+    //     * 重新启动计时
+    //     */
+    //    public void reStart(long _time_s) {
+    //        if (_time_s == -1) {
+    //            mNextTime = mTime;
+    //        } else {
+    //            mTime = mNextTime = _time_s;
+    //        }
+    //        this.start();
+    //    }
+    //
+    //    public void reStart() {
+    //        reStart(-1);
+    //    }
 
     /**
      * 关闭闹钟响铃

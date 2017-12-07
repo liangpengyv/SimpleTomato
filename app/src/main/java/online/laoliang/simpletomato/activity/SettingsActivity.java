@@ -19,7 +19,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     private TextView showNonceWorkDuration;
     private TextView showNonceRestDuration;
 
-    final private int seekBarWorkMinNum = 10;
+    final private int seekBarWorkMinNum = 1;
     final private int seekBarRestMinNum = 1;
 
     private void findView() {
