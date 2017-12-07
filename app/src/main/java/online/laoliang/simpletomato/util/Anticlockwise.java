@@ -65,6 +65,11 @@ public class Anticlockwise extends Chronometer {
         context.stopService(intent);
     }
 
+    public int getAlreadyMin() {
+        //已完成的分钟数
+        return (int) ((float) (mTime - mNextTime) / (float) 60);
+    }
+
     /**
      * 设置时间格式
      *

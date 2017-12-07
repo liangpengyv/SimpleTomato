@@ -8,8 +8,11 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import online.laoliang.simpletomato.R;
+import online.laoliang.simpletomato.db.TomatoDatabase;
+import online.laoliang.simpletomato.model.Tomato;
 import online.laoliang.simpletomato.util.Anticlockwise;
 import online.laoliang.simpletomato.util.CircleProgressBar;
 
@@ -24,6 +27,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button buttonStatistics;
 
     private Intent intent;
+
+    private TomatoDatabase tomatoDatabase;
+
+    private Tomato tomato;
 
     private void findView() {
         anticlockwiseCountDown = (Anticlockwise) findViewById(R.id.anticlockwise_count_down);
@@ -94,12 +101,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog_Alert).setCancelable(false).setMessage("要放弃这个番茄吗").setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+
+                        // 此处烂番茄+1
+                        tomato = new Tomato();
+                        tomato.setTomatoStatus("Bad");
+                        tomato.setDurationMin(anticlockwiseCountDown.getAlreadyMin());
+                        tomato.setNonceTimestamp(System.currentTimeMillis());
+                        tomatoDatabase = new TomatoDatabase(MainActivity.this);
+                        tomatoDatabase.insert(tomato);
+
                         anticlockwiseCountDown.initTime(workDuration, "开始");
                         buttonSettings.setVisibility(View.VISIBLE);
                         buttonStatistics.setVisibility(View.VISIBLE);
                         mainCircle.setProgress(0);
-                        //此处烂番茄+1
-                        ////////////
+
                         editor.putString("nonceStatus", "work_waiting");
                         editor.apply();
                     }
@@ -111,11 +126,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }).create().show();
                 break;
             case "work_over":
+
+                //此处好番茄+1
+                tomato = new Tomato();
+                tomato.setTomatoStatus("Great");
+                tomato.setDurationMin(anticlockwiseCountDown.getAlreadyMin());
+                tomato.setNonceTimestamp(System.currentTimeMillis());
+                tomatoDatabase = new TomatoDatabase(MainActivity.this);
+                tomatoDatabase.insert(tomato);
+                Toast.makeText(MainActivity.this, "一个番茄已达成！", Toast.LENGTH_SHORT).show();
+
                 anticlockwiseCountDown.ringStop();
                 anticlockwiseCountDown.initTime(restDuration, "休息");
                 buttonSettings.setVisibility(View.VISIBLE);
                 buttonStatistics.setVisibility(View.VISIBLE);
                 mainCircle.setProgress(0);
+
                 editor.putString("nonceStatus", "rest_waiting");
                 editor.apply();
                 break;
@@ -175,8 +201,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog_Alert).setCancelable(false).setMessage("要放弃这个番茄吗").setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+
                         //此处烂番茄+1
-                        ////////////
+                        tomato = new Tomato();
+                        tomato.setTomatoStatus("Bad");
+                        tomato.setDurationMin(anticlockwiseCountDown.getAlreadyMin());
+                        tomato.setNonceTimestamp(System.currentTimeMillis());
+                        tomatoDatabase = new TomatoDatabase(MainActivity.this);
+                        tomatoDatabase.insert(tomato);
+
                         MainActivity.super.onBackPressed();
                     }
                 }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -191,6 +224,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         anticlockwiseCountDown.ringStop();
+
+                        //此处好番茄+1
+                        tomato = new Tomato();
+                        tomato.setTomatoStatus("Great");
+                        tomato.setDurationMin(anticlockwiseCountDown.getAlreadyMin());
+                        tomato.setNonceTimestamp(System.currentTimeMillis());
+                        tomatoDatabase = new TomatoDatabase(MainActivity.this);
+                        tomatoDatabase.insert(tomato);
+                        Toast.makeText(MainActivity.this, "一个番茄已达成！", Toast.LENGTH_SHORT).show();
+
                         MainActivity.super.onBackPressed();
                     }
                 }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
