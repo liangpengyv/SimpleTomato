@@ -6,14 +6,17 @@
     android:orientation="vertical"
     tools:context="online.laoliang.simpletomato.activity.SettingsActivity">
 
+    <include layout="@layout/common_title_bar" />
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp">
 
         <Button
             android:id="@+id/set_work_duration"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="60dp"
             android:background="#00000000" />
 
         <TextView
@@ -21,7 +24,8 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="30dp"
-            android:text="工作时长" />
+            android:text="工作时长"
+            android:textSize="17sp" />
 
         <TextView
             android:id="@+id/reference_point_01"
@@ -30,7 +34,8 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="30dp"
-            android:text="分钟" />
+            android:text="分钟"
+            android:textSize="17sp" />
 
         <TextView
             android:id="@+id/show_nonce_work_duration"
@@ -38,15 +43,18 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@id/reference_point_01"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="-30dp"
-            android:textColor="@color/colorPrimary" />
+            android:layout_marginLeft="-25dp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp" />
 
     </RelativeLayout>
 
     <SeekBar
         android:id="@+id/choose_work_duration"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="60dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:max="50"
         android:visibility="gone" />
 
@@ -62,7 +70,7 @@
         <Button
             android:id="@+id/set_rest_duration"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="60dp"
             android:background="#00000000" />
 
         <TextView
@@ -70,7 +78,8 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="30dp"
-            android:text="休息时长" />
+            android:text="休息时长"
+            android:textSize="17sp" />
 
         <TextView
             android:id="@+id/reference_point_02"
@@ -79,7 +88,8 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="30dp"
-            android:text="分钟" />
+            android:text="分钟"
+            android:textSize="17sp" />
 
         <TextView
             android:id="@+id/show_nonce_rest_duration"
@@ -87,15 +97,18 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@id/reference_point_02"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="-30dp"
-            android:textColor="@color/colorPrimary" />
+            android:layout_marginLeft="-25dp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp" />
 
     </RelativeLayout>
 
     <SeekBar
         android:id="@+id/choose_rest_duration"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="60dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:max="29"
         android:visibility="gone" />
 

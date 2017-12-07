@@ -37,7 +37,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignStart="@+id/relativeLayout2"
         android:layout_marginBottom="30dp"
-        android:layout_marginLeft="-20dp"
+        android:layout_marginLeft="-10dp"
         android:background="@mipmap/menu_setting"/>
 
     <Button
@@ -47,7 +47,7 @@
         android:layout_alignEnd="@+id/relativeLayout2"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="30dp"
-        android:layout_marginRight="-20dp"
+        android:layout_marginRight="-10dp"
         android:background="@mipmap/menu_statistics"/>
 
 </RelativeLayout>

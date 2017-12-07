@@ -19,6 +19,8 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     private TextView showNonceWorkDuration;
     private TextView showNonceRestDuration;
 
+    private TextView back;
+
     final private int seekBarWorkMinNum = 1;
     final private int seekBarRestMinNum = 1;
 
@@ -36,6 +38,10 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         showNonceWorkDuration.setText(sharedPreferences.getInt("workDuration", 25) + "");
         showNonceRestDuration = (TextView) findViewById(R.id.show_nonce_rest_duration);
         showNonceRestDuration.setText(sharedPreferences.getInt("restDuration", 5) + "");
+
+        back = (TextView) findViewById(R.id.back);
+        back.setText("<- 设置");
+        back.setOnClickListener(this);
     }
 
     @Override
@@ -67,6 +73,9 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
                 } else {
                     chooseRestDuration.setVisibility(View.GONE);
                 }
+                break;
+            case R.id.back:
+                finish();
                 break;
         }
     }

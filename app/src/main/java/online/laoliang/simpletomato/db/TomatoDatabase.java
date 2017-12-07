@@ -22,12 +22,22 @@ public class TomatoDatabase {
         db = myDatabaseHelper.getWritableDatabase();
     }
 
+    /**
+     * 插入一条番茄数据
+     *
+     * @param tomato
+     */
     public void insert(Tomato tomato) {
         String sql = "insert into Tomato (tomato_status, duration_min, nonce_timestamp) values (?, ?, ?)";
         String[] seats = new String[]{tomato.getTomatoStatus(), tomato.getDurationMin() + "", tomato.getNonceTimestamp() + ""};
         db.execSQL(sql, seats);
     }
 
+    /**
+     * 获取全部已达成番茄数
+     *
+     * @return
+     */
     public int queryAllSuccessfulTomatoNumber() {
         String sql = "select * from Tomato where tomato_status='Great'";
         Cursor cursor = db.rawQuery(sql, null);
@@ -35,6 +45,11 @@ public class TomatoDatabase {
         return result;
     }
 
+    /**
+     * 获取全部失败番茄数
+     *
+     * @return
+     */
     public int queryAllFailedTomatoNumber() {
         String sql = "select * from Tomato where tomato_status='Bad'";
         Cursor cursor = db.rawQuery(sql, null);
@@ -42,6 +57,11 @@ public class TomatoDatabase {
         return result;
     }
 
+    /**
+     * 获取全部工作时间分钟数
+     *
+     * @return
+     */
     public int queryAllDurationMin() {
         String sql = "select sum(duration_min) as resultSum from Tomato";
         Cursor cursor = db.rawQuery(sql, null);
@@ -50,6 +70,11 @@ public class TomatoDatabase {
         return result;
     }
 
+    /**
+     * 获取今日已达成番茄数
+     *
+     * @return
+     */
     public int queryTodaySuccessfulTomatoNumber() {
         String sql = "select * from Tomato where tomato_status='Great' and nonce_timestamp>?";
         String[] seats = new String[]{getTimeMorning() + ""};
@@ -58,6 +83,11 @@ public class TomatoDatabase {
         return result;
     }
 
+    /**
+     * 获取今日失败番茄数
+     *
+     * @return
+     */
     public int queryTodayFailedTomatoNumber() {
         String sql = "select * from Tomato where tomato_status='Bad' and nonce_timestamp>?";
         String[] seats = new String[]{getTimeMorning() + ""};
@@ -66,6 +96,11 @@ public class TomatoDatabase {
         return result;
     }
 
+    /**
+     * 获取今日工作时间分钟数
+     *
+     * @return
+     */
     public int queryTodayDurationMin() {
         String sql = "select sum(duration_min) as resultSum from Tomato where nonce_timestamp>?";
         String[] seats = new String[]{getTimeMorning() + ""};
