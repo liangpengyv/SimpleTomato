@@ -32,14 +32,6 @@ public class StatisticsActivity extends AppCompatActivity implements View.OnClic
         back.setOnClickListener(this);
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_statistics);
-        findView();
-        initView();
-    }
-
     private void initView() {
         TomatoDatabase tomatoDatabase = new TomatoDatabase(this);
 
@@ -48,10 +40,19 @@ public class StatisticsActivity extends AppCompatActivity implements View.OnClic
         allGreatTomato.setText(tomatoDatabase.queryAllSuccessfulTomatoNumber() + "");
         allBadTomato.setText(tomatoDatabase.queryAllFailedTomatoNumber() + "");
 
+        // 数据库得到分钟数，这里需要转换成小时，再展示
         String minToHourForToday = String.format("%.2f", ((float) tomatoDatabase.queryTodayDurationMin() / (float) 60));
         todayDurationHour.setText(minToHourForToday);
         String minToHourForAll = String.format("%.2f", ((float) tomatoDatabase.queryAllDurationMin() / (float) 60));
         allDurationHour.setText(minToHourForAll);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_statistics);
+        findView();
+        initView();
     }
 
     @Override

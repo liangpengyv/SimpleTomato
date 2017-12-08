@@ -17,11 +17,14 @@ import online.laoliang.simpletomato.service.RingtonePlayingService;
 
 public class Anticlockwise extends Chronometer {
 
+    // 总时间（秒）
     private long mTime;
+    // 剩余时间（秒）
     private long mNextTime;
     private OnTimeCompleteListener mListener;
     private SimpleDateFormat mTimeFormat;
     private Context context = ContextHolder.getContext();
+    // 启动一个服务用来播放闹钟铃声的intent
     private Intent intent = new Intent(context, RingtonePlayingService.class);
 
     public Anticlockwise(Context context) {
@@ -33,54 +36,6 @@ public class Anticlockwise extends Chronometer {
         //自动生成的构造函数存根
         mTimeFormat = new SimpleDateFormat("mm:ss");
         this.setOnChronometerTickListener(listener);
-    }
-
-    @Override
-    protected void onWindowVisibilityChanged(int visibility) {
-        // 始终将控件置为“VISIBLE”，保证按home键和熄灭屏幕时，倒计时仍在继续
-        visibility = VISIBLE;
-        super.onWindowVisibilityChanged(visibility);
-    }
-
-    //    /**
-    //     * 重新启动计时
-    //     */
-    //    public void reStart(long _time_s) {
-    //        if (_time_s == -1) {
-    //            mNextTime = mTime;
-    //        } else {
-    //            mTime = mNextTime = _time_s;
-    //        }
-    //        this.start();
-    //    }
-    //
-    //    public void reStart() {
-    //        reStart(-1);
-    //    }
-
-    /**
-     * 关闭闹钟响铃
-     */
-    public void ringStop() {
-        context.stopService(intent);
-    }
-
-    public int getAlreadyMin() {
-        //已完成的分钟数
-        return (int) ((float) (mTime - mNextTime) / (float) 60);
-    }
-
-    /**
-     * 设置时间格式
-     *
-     * @param pattern 计时格式
-     */
-    public void setTimeFormat(String pattern) {
-        mTimeFormat = new SimpleDateFormat(pattern);
-    }
-
-    public void setOnTimeCompleteListener(OnTimeCompleteListener l) {
-        mListener = l;
     }
 
     OnChronometerTickListener listener = new OnChronometerTickListener() {
@@ -96,17 +51,20 @@ public class Anticlockwise extends Chronometer {
                     if (null != mListener)
                         mListener.onTimeComplete();
                 }
+
                 mNextTime = 0;
                 updateTimeText();
+
                 // 进度条设置到100%
                 MainActivity.mainCircle.setProgress(10000); //因为进度条控件总份数（mMax）设置成了10000
+
                 // 启动一个服务播放当前系统闹钟音乐
                 context.startService(intent);
                 return;
             }
 
+            // 继续倒计时并更新界面时间
             mNextTime--;
-
             updateTimeText();
         }
     };
@@ -123,6 +81,32 @@ public class Anticlockwise extends Chronometer {
         }
     }
 
+    /**
+     * 关闭闹钟响铃
+     */
+    public void ringStop() {
+        context.stopService(intent);
+    }
+
+    /**
+     * 获取已完成分钟数
+     *
+     * @return
+     */
+    public int getAlreadyMin() {
+        return (int) ((float) (mTime - mNextTime) / (float) 60);
+    }
+
+    @Override
+    protected void onWindowVisibilityChanged(int visibility) {
+        // 始终将控件置为“VISIBLE”，保证按home键和熄灭屏幕时，倒计时仍在继续
+        visibility = VISIBLE;
+        super.onWindowVisibilityChanged(visibility);
+    }
+
+    /**
+     * 更新桌面时间显示
+     */
     private void updateTimeText() {
         this.setText(mTimeFormat.format(new Date(mNextTime * 1000)));
     }

@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private final int DEFAULT_WORK_DURATION = 25;
     private final int DEFAULT_REST_DURATION = 5;
 
-    private Anticlockwise anticlockwiseCountDown;
+    private Anticlockwise countdown;
     public static CircleProgressBar mainCircle;
     private Button buttonSettings;
     private Button buttonStatistics;
@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Tomato tomato;
 
     private void findView() {
-        anticlockwiseCountDown = (Anticlockwise) findViewById(R.id.anticlockwise_count_down);
+        countdown = (Anticlockwise) findViewById(R.id.anticlockwise_count_down);
         mainCircle = (CircleProgressBar) findViewById(R.id.main_circle);
         mainCircle.setOnClickListener(this);
         buttonSettings = (Button) findViewById(R.id.button_settings);
@@ -42,12 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonStatistics.setOnClickListener(this);
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        findView();
-
+    private void initView() {
         //当主活动被重新创建时，将闹钟状态重置为work_waiting
         SharedPreferences.Editor editor = getSharedPreferences("data", MODE_PRIVATE).edit();
         editor.putString("nonceStatus", "work_waiting");
@@ -55,9 +50,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //同时将闹钟主按钮重置为初始状态
         SharedPreferences sharedPreferences = getSharedPreferences("data", MODE_PRIVATE);
         int workDuration = sharedPreferences.getInt("workDuration", DEFAULT_WORK_DURATION);
-        anticlockwiseCountDown.initTime(workDuration, "开始");
+        countdown.initTime(workDuration, "开始");
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        findView();
+        initView();
+    }
+
+    /**
+     * 按钮点击事件
+     *
+     * @param view
+     */
     @Override
     public void onClick(View view) {
         int id = view.getId();
@@ -89,28 +97,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         switch (nonceStatus) {
             case "work_waiting":
-                anticlockwiseCountDown.initTime(workDuration, null);
-                anticlockwiseCountDown.start();
+                countdown.initTime(workDuration, null);
+                countdown.start();
+
                 buttonSettings.setVisibility(View.INVISIBLE);
                 buttonStatistics.setVisibility(View.INVISIBLE);
+
                 editor.putString("nonceStatus", "work_running");
                 editor.apply();
                 break;
             case "work_running":
-                anticlockwiseCountDown.stop();
-                new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog_Alert).setCancelable(false).setMessage("要放弃这个番茄吗").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                countdown.stop();
+                new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog_Alert).setCancelable(false).setTitle("暂停").setMessage("要放弃这个番茄吗").setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
                         // 此处烂番茄+1
                         tomato = new Tomato();
                         tomato.setTomatoStatus("Bad");
-                        tomato.setDurationMin(anticlockwiseCountDown.getAlreadyMin());
+                        tomato.setDurationMin(countdown.getAlreadyMin());
                         tomato.setNonceTimestamp(System.currentTimeMillis());
                         tomatoDatabase = new TomatoDatabase(MainActivity.this);
                         tomatoDatabase.insert(tomato);
 
-                        anticlockwiseCountDown.initTime(workDuration, "开始");
+                        countdown.initTime(workDuration, "开始");
                         buttonSettings.setVisibility(View.VISIBLE);
                         buttonStatistics.setVisibility(View.VISIBLE);
                         mainCircle.setProgress(0);
@@ -121,23 +131,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        anticlockwiseCountDown.start();
+                        countdown.start();
                     }
                 }).create().show();
                 break;
             case "work_over":
-
                 //此处好番茄+1
                 tomato = new Tomato();
                 tomato.setTomatoStatus("Great");
-                tomato.setDurationMin(anticlockwiseCountDown.getAlreadyMin());
+                tomato.setDurationMin(countdown.getAlreadyMin());
                 tomato.setNonceTimestamp(System.currentTimeMillis());
                 tomatoDatabase = new TomatoDatabase(MainActivity.this);
                 tomatoDatabase.insert(tomato);
                 Toast.makeText(MainActivity.this, "一个番茄已达成！", Toast.LENGTH_SHORT).show();
 
-                anticlockwiseCountDown.ringStop();
-                anticlockwiseCountDown.initTime(restDuration, "休息");
+                countdown.ringStop();
+                countdown.initTime(restDuration, "休息");
                 buttonSettings.setVisibility(View.VISIBLE);
                 buttonStatistics.setVisibility(View.VISIBLE);
                 mainCircle.setProgress(0);
@@ -146,38 +155,42 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 editor.apply();
                 break;
             case "rest_waiting":
-                anticlockwiseCountDown.initTime(restDuration, null);
-                anticlockwiseCountDown.start();
+                countdown.initTime(restDuration, null);
+                countdown.start();
+
                 buttonSettings.setVisibility(View.INVISIBLE);
                 buttonStatistics.setVisibility(View.INVISIBLE);
+
                 editor.putString("nonceStatus", "rest_running");
                 editor.apply();
                 break;
             case "rest_running":
-                anticlockwiseCountDown.stop();
-                new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog_Alert).setCancelable(false).setMessage("结束本次休息").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                countdown.stop();
+                new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog_Alert).setCancelable(false).setTitle("暂停").setMessage("结束本次休息").setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        anticlockwiseCountDown.initTime(workDuration, "开始");
+                        countdown.initTime(workDuration, "开始");
                         buttonSettings.setVisibility(View.VISIBLE);
                         buttonStatistics.setVisibility(View.VISIBLE);
                         mainCircle.setProgress(0);
+
                         editor.putString("nonceStatus", "work_waiting");
                         editor.apply();
                     }
                 }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        anticlockwiseCountDown.start();
+                        countdown.start();
                     }
                 }).create().show();
                 break;
             case "rest_over":
-                anticlockwiseCountDown.ringStop();
-                anticlockwiseCountDown.initTime(workDuration, "开始");
+                countdown.ringStop();
+                countdown.initTime(workDuration, "开始");
                 buttonSettings.setVisibility(View.VISIBLE);
                 buttonStatistics.setVisibility(View.VISIBLE);
                 mainCircle.setProgress(0);
+
                 editor.putString("nonceStatus", "work_waiting");
                 editor.apply();
                 break;
@@ -197,15 +210,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 super.onBackPressed();
                 break;
             case "work_running":
-                anticlockwiseCountDown.stop();
-                new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog_Alert).setCancelable(false).setMessage("要放弃这个番茄吗").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                countdown.stop();
+                new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog_Alert).setCancelable(false).setTitle("暂停").setMessage("要放弃这个番茄吗").setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-
                         //此处烂番茄+1
                         tomato = new Tomato();
                         tomato.setTomatoStatus("Bad");
-                        tomato.setDurationMin(anticlockwiseCountDown.getAlreadyMin());
+                        tomato.setDurationMin(countdown.getAlreadyMin());
                         tomato.setNonceTimestamp(System.currentTimeMillis());
                         tomatoDatabase = new TomatoDatabase(MainActivity.this);
                         tomatoDatabase.insert(tomato);
@@ -215,20 +227,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        anticlockwiseCountDown.start();
+                        countdown.start();
                     }
                 }).create().show();
                 break;
             case "work_over":
-                new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog_Alert).setCancelable(false).setMessage("要关闭响铃并退出应用吗").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog_Alert).setCancelable(false).setTitle("退出").setMessage("要关闭响铃并退出应用吗").setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        anticlockwiseCountDown.ringStop();
+                        countdown.ringStop();
 
                         //此处好番茄+1
                         tomato = new Tomato();
                         tomato.setTomatoStatus("Great");
-                        tomato.setDurationMin(anticlockwiseCountDown.getAlreadyMin());
+                        tomato.setDurationMin(countdown.getAlreadyMin());
                         tomato.setNonceTimestamp(System.currentTimeMillis());
                         tomatoDatabase = new TomatoDatabase(MainActivity.this);
                         tomatoDatabase.insert(tomato);
@@ -243,7 +255,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }).create().show();
                 break;
             case "rest_waiting":
-                new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog_Alert).setCancelable(false).setMessage("退出应用？").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog_Alert).setCancelable(false).setTitle("退出").setMessage("退出应用？").setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         MainActivity.super.onBackPressed();
@@ -255,8 +267,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }).create().show();
                 break;
             case "rest_running":
-                anticlockwiseCountDown.stop();
-                new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog_Alert).setCancelable(false).setMessage("要结束休息并退出应用吗").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                countdown.stop();
+                new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog_Alert).setCancelable(false).setTitle("暂停").setMessage("要结束休息并退出应用吗").setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         MainActivity.super.onBackPressed();
@@ -264,15 +276,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        anticlockwiseCountDown.start();
+                        countdown.start();
                     }
                 }).create().show();
                 break;
             case "rest_over":
-                new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog_Alert).setCancelable(false).setMessage("要关闭响铃并退出应用吗").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog_Alert).setCancelable(false).setTitle("退出").setMessage("要关闭响铃并退出应用吗").setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        anticlockwiseCountDown.ringStop();
+                        countdown.ringStop();
+
                         MainActivity.super.onBackPressed();
                     }
                 }).setNegativeButton("取消", new DialogInterface.OnClickListener() {

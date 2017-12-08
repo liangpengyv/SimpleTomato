@@ -11,7 +11,8 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        // 用于辅助全局获取获取Context对象
         ContextHolder.init(getApplicationContext());
     }
-
 }

@@ -21,6 +21,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
     private TextView back;
 
+    // 规定滑动条最小值
     final private int seekBarWorkMinNum = 1;
     final private int seekBarRestMinNum = 1;
 

@@ -46,7 +46,6 @@
             android:layout_marginLeft="-25dp"
             android:textColor="@color/colorPrimary"
             android:textSize="20sp" />
-
     </RelativeLayout>
 
     <SeekBar
@@ -100,7 +99,6 @@
             android:layout_marginLeft="-25dp"
             android:textColor="@color/colorPrimary"
             android:textSize="20sp" />
-
     </RelativeLayout>
 
     <SeekBar
@@ -111,5 +109,4 @@
         android:layout_marginRight="20dp"
         android:max="29"
         android:visibility="gone" />
-
 </LinearLayout>

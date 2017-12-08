@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="online.laoliang.simpletomato">
 
+    <!-- 唤醒锁权限，用于点亮屏幕 -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
@@ -24,5 +25,4 @@
 
         <service android:name=".service.RingtonePlayingService" />
     </application>
-
 </manifest>

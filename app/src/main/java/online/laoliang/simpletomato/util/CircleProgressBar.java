@@ -21,15 +21,13 @@ public class CircleProgressBar extends View {
     private float mStrokeWidth = 20;
     // 画笔的一半宽度
     private float mHalfStrokeWidth = 20 / 2;
-    // 半径
+    // 半径（这里不同机型会有适配问题，待解决）
     private float mRadius = 560;
     private RectF mRect;
     // 当前进度
     private int mProgress = 0;
-    // 目标进度
-    private int mTargetProgress = 100;
-    // 最大值(将一个圆圈分成多少份）
-    private int mMax = 10000; //这里分成了10000份
+    // 将一个圆圈分成多少份（这里分成了10000份）
+    private int mMax = 10000;
     private int mWidth;
     private int mHeight;
 
@@ -46,7 +44,27 @@ public class CircleProgressBar extends View {
         init();
     }
 
-    // 初始化画笔
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        mWidth = getRealSize(widthMeasureSpec);
+        mHeight = getRealSize(heightMeasureSpec);
+        setMeasuredDimension(mWidth, mHeight);
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        initRect();
+        float angle = mProgress / (float) mMax * 360;
+        canvas.drawCircle(mWidth / 2, mHeight / 2, mRadius, mBackPaint);
+        canvas.drawArc(mRect, -90, angle, false, mFrontPaint);
+        // 因为进度条总份数（mMax）设置成了10000，所以这里要显示百分比，就应该除以100
+        canvas.drawText(mProgress / 100 + "%", mWidth / 2 + mHalfStrokeWidth, mHeight / 2 + mHalfStrokeWidth, mTextPaint);
+    }
+
+    /**
+     * 初始化画笔
+     */
     private void init() {
         // 背景画笔
         mBackPaint = new Paint();
@@ -70,15 +88,12 @@ public class CircleProgressBar extends View {
         mTextPaint.setTextAlign(Paint.Align.CENTER);
     }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        mWidth = getRealSize(widthMeasureSpec);
-        mHeight = getRealSize(heightMeasureSpec);
-        setMeasuredDimension(mWidth, mHeight);
-    }
-
-    // 计算真实大小
+    /**
+     * 计算真实大小
+     *
+     * @param measureSpec
+     * @return
+     */
     private int getRealSize(int measureSpec) {
         int result = 1;
         int mode = MeasureSpec.getMode(measureSpec);
@@ -91,12 +106,19 @@ public class CircleProgressBar extends View {
         return result;
     }
 
-    // 设置当前进度
+    /**
+     * 设置当前进度
+     *
+     * @param progress
+     */
     public void setProgress(int progress) {
         mProgress = progress;
         invalidate();
     }
 
+    /**
+     * 初始化矩形界面
+     */
     private void initRect() {
         if (mRect == null) {
             mRect = new RectF();
@@ -107,22 +129,5 @@ public class CircleProgressBar extends View {
             int bottom = top + viewSize;
             mRect.set(left, top, right, bottom);
         }
-
     }
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-        initRect();
-        float angle = mProgress / (float) mMax * 360;
-        canvas.drawCircle(mWidth / 2, mHeight / 2, mRadius, mBackPaint);
-        canvas.drawArc(mRect, -90, angle, false, mFrontPaint);
-        // 因为进度条总份数（mMax）设置成了10000，所以这里要显示百分比，就应该除以100
-        canvas.drawText(mProgress / 100 + "%", mWidth / 2 + mHalfStrokeWidth, mHeight / 2 + mHalfStrokeWidth, mTextPaint);
-//        if (mProgress < mTargetProgress) {
-//            mProgress += 1;
-//            // 延迟1000毫秒更新
-//            postInvalidateDelayed(1000);
-//        }
-    }
-
 }
